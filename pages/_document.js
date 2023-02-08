@@ -1,6 +1,13 @@
 import { ColorModeScript } from '@chakra-ui/react'
 import { Html, Head, Main, NextScript } from 'next/document'
-import theme from './theme'
+import { extendTheme } from '@chakra-ui/react'
+
+const config ={
+    initialColorMode: 'dark',
+    useSystemColorMode: false
+}
+
+const theme = extendTheme({ config })
 
 export default function Document() {
   return (

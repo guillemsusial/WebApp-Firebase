@@ -32,10 +32,15 @@ const KahootPage = () => {
   }
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const deleteAllData = () => {
+  const deleteUsersData = () => {
     remove(ref(db,'users')).then(()=>{
       console.log("Success!")
       onClose()
+    }).then(()=>{
+      set(ref(db,'counts'),{
+        userIdCount: 1
+      })
+      console.log("User first id set to 1")
     }).catch((error) => {
       console.log(error)
     })
@@ -77,7 +82,7 @@ const KahootPage = () => {
           ))}
         </SimpleGrid>
         <Flex>
-          <Button colorScheme='green' mt={10} onClick={addData}>
+          <Button colorScheme='green' mt={10}>
             <ExternalLinkIcon mr={3}/>Start quiz
           </Button>
           <Spacer />
@@ -95,7 +100,7 @@ const KahootPage = () => {
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button colorScheme='red' onClick={deleteAllData}>Delete data</Button>
+            <Button colorScheme='red' onClick={deleteUsersData}>Delete data</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -37,16 +37,14 @@ const KahootPage = () => {
       console.log("Success!")
       onClose()
     }).then(()=>{
-      set(ref(db,'counts'),{
-        userIdCount: 1
-      })
+      set(ref(db,'counts/userIdCount'),1)
       console.log("User first id set to 1")
     }).catch((error) => {
       console.log(error)
     })
   }
 
-  const [participants, setParticipants] = useState([]);
+  const [participants, setParticipants] = useState([])
   useEffect(() => {
     onValue(ref(db,'users/'), snapshot => {
       let data = [];
@@ -57,11 +55,39 @@ const KahootPage = () => {
     });
   }, []);
 
+  const [numbers, setNumbers] = useState([])
+  const [quizNumber, setQuizNumber] = useState([])
+  useEffect(() => {
+    const randomNumbers = [];
+    const quizNumberRandom = Math.floor(Math.random() * 4)+0
+    for (let i = 0; i < 5; i++) {
+      var random = Math.floor(Math.random() * (99999 - 10000 + 1) + 10000)
+      randomNumbers.push(random);
+      if (i==quizNumberRandom) {
+        setQuizNumber(random)
+      }
+    }
+    set(ref(db,'counts/quizNumberIndex'),quizNumberRandom)
+    setNumbers(randomNumbers);
+  }, []);
+
+  useEffect(() => {
+    numbers.forEach((number, index) => {
+      set(ref(db, "numbers/"+index), number);
+    });
+  }, [numbers]);
+
   return (
     <Box p={8} maxW="800px" mx="auto">
-      <Heading as="h1" mb={8}>
-        Guillem's Quiz App
-      </Heading>
+      <Flex>
+        <Heading as="h1" mb={8}>
+          Guillem's Quiz App
+        </Heading>
+        <Spacer />
+        <Heading as="h1" mb={8}>
+          {quizNumber}
+        </Heading>
+      </Flex>
       <Box
         mt={8}
         p={8}

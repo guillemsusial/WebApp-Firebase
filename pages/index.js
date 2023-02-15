@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react'
 import {db} from '../config'
 import {ref,set,onValue, remove} from 'firebase/database'
 import {
@@ -18,12 +18,17 @@ import {
   ModalFooter,
   ModalCloseButton,
   useDisclosure
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 import { ExternalLinkIcon,DeleteIcon } from '@chakra-ui/icons'
 
 //https://www.youtube.com/watch?v=6wk1OrGKE1w !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 const KahootPage = () => {
+
+  useEffect(() => {
+    deleteUsersData()
+  }, []);
+
   const addData = () => {
     set(ref(db,'users/' + 5),{
       name: "KOI Erika",
@@ -47,18 +52,18 @@ const KahootPage = () => {
   const [participants, setParticipants] = useState([])
   useEffect(() => {
     onValue(ref(db,'users/'), snapshot => {
-      let data = [];
+      let data = []
       snapshot.forEach(snap => {
-        data.push(snap.val());
+        data.push(snap.val())
       });
-      setParticipants(data);
-    });
-  }, []);
+      setParticipants(data)
+    })
+  }, [])
 
   const [numbers, setNumbers] = useState([])
   const [quizNumber, setQuizNumber] = useState([])
   useEffect(() => {
-    const randomNumbers = [];
+    const randomNumbers = []
     const quizNumberRandom = Math.floor(Math.random() * 4)+0
     for (let i = 0; i < 5; i++) {
       var random = Math.floor(Math.random() * (99999 - 10000 + 1) + 10000)
@@ -68,14 +73,14 @@ const KahootPage = () => {
       }
     }
     set(ref(db,'counts/quizNumberIndex'),quizNumberRandom)
-    setNumbers(randomNumbers);
-  }, []);
+    setNumbers(randomNumbers)
+  }, [])
 
   useEffect(() => {
     numbers.forEach((number, index) => {
-      set(ref(db, "numbers/"+index), number);
+      set(ref(db, "numbers/"+index), number)
     });
-  }, [numbers]);
+  }, [numbers])
 
   return (
     <Box p={8} maxW="800px" mx="auto">
